@@ -16,14 +16,12 @@ public class Ej10 {
     public void organizar(File dir) {
         if (!dir.exists() || !dir.isDirectory()) {
             System.out.println("El directorio no existe.");
-            return;
         }
 
         File[] archivos = dir.listFiles();
 
         if (archivos == null) {
             System.out.println("No se puede leer el directorio.");
-            return;
         }
 
         for (File archivo : archivos) {
