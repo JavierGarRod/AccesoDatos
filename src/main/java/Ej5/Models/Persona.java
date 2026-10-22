@@ -1,5 +1,6 @@
 package Ej5.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Persona {
@@ -9,12 +10,12 @@ public class Persona {
 	List<Double> notas;
 	
 	
-	public Persona(double notaMin, double notaMax, String nombre, List<Double> notas) {
+	public Persona(String nombre) {
 		super();
 		this.notaMin = notaMin;
 		this.notaMax = notaMax;
 		this.nombre = nombre;
-		this.notas = notas;
+		this.notas = new ArrayList<Double>();
 	}
 	
 	
