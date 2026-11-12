@@ -16,13 +16,14 @@ public class GestionaXML {
 		
 		//Leo fichero y construyo Document
 		Document doc=utiles.getDocumentFromXML("Libro.xml");
-		Document docs=utiles.getDocumentFromXML("Libros.xml");
-        
+		
 		//Te devuelve la raiz
         Element raiz=doc.getDocumentElement();
         Libro libro=utiles.fromElement2Libro(raiz);
         System.out.println(libro);
         
+        //Leo fichero y construyo Document
+        Document docs=utiles.getDocumentFromXML("Libros.xml");
         Element raiz2=docs.getDocumentElement();
         List<Libro> libros=utiles.leerLibrosDesdeXML(raiz2);
         System.out.println(libros);
