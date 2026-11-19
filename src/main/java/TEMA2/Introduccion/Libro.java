@@ -1,4 +1,4 @@
-package TEMA1.LecturaXML.Introduccion;
+package TEMA2.Introduccion;
 
 import java.io.File;
 import java.util.Objects;

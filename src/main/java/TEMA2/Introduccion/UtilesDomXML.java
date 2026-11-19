@@ -1,4 +1,4 @@
-package TEMA1.LecturaXML.Introduccion;
+package TEMA2.Introduccion;
 
 import java.io.IOException;
 import java.security.KeyStore.Entry.Attribute;
@@ -28,7 +28,6 @@ public class UtilesDomXML {
         
         try {
         	builder=factory.newDocumentBuilder();
-        	
         	doc=builder.parse(new File(RUTA_RESOURCES+nombreFichero));
         	
         }catch (ParserConfigurationException e) {

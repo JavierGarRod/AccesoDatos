@@ -1,4 +1,4 @@
-package TEMA1.LecturaXML.Introduccion;
+package TEMA2.Introduccion;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,18 +14,15 @@ public class GestionaXML {
 	public static void main(String[] args) {
 		UtilesDomXML utiles=new UtilesDomXML();
 		
-		//Leo fichero y construyo Document
-		Document doc=utiles.getDocumentFromXML("Libro.xml");
+		Document doc=utiles.getDocumentFromXML("Libro.xml");//Leo fichero y construyo Document
+		Element raiz=doc.getDocumentElement(); //Te devuelve la raiz
 		
-		//Te devuelve la raiz
-        Element raiz=doc.getDocumentElement();
+		//Te devuelve la raiz Pelicula y el primer elemento de pelicula
         Libro libro=utiles.fromElement2Libro(raiz);
         System.out.println(libro);
         
-        //Leo fichero y construyo Document
-        Document docs=utiles.getDocumentFromXML("Libros.xml");
-        Element raiz2=docs.getDocumentElement();
-        List<Libro> libros=utiles.leerLibrosDesdeXML(raiz2);
+        //Devuelve una lista con todos los elementos de la raiz de pelicula
+        List<Libro> libros=utiles.leerLibrosDesdeXML(raiz);
         System.out.println(libros);
 	}
 
