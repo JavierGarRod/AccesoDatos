@@ -8,9 +8,17 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import TEMA2.Introduccion.Libro;
@@ -79,6 +87,78 @@ public class UtilesDomXML {
 		
 		return peliculas;
 	}
-		
-		
+	
+	//Método que devuelve un Document a partir de la raíz
+	private Document construyoObjetoDocumento(String nombreRaiz) throws ParserConfigurationException {
+		Document documento = null;
+		DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factoria.newDocumentBuilder();
+		DOMImplementation implementacion = builder.getDOMImplementation();
+		documento = implementacion.createDocument(null, nombreRaiz, null);
+		// Primer parámetro uri: si null no está validado por ninguna ruta
+		// segundo parámetro: nombre fichero
+		// tercer parámetro: document type Por defecto null  Permite asociar DTD
+		return documento;
+	}
+
+	//Método que agrega al documento un empleado
+	private void agregaPeliculaADocumento(Document documento,Element padre,  Pelicula p) {
+		// Para cada una de los atributos de persona, creo un elemento hijo
+		Element titulo = this.creaElemento("Titulo", p.getTitulo(), padre, documento);
+		Element ano = this.creaElemento("Ano", p.getAno(), padre, documento);
+		Element director = this.creaElemento("Director", p.getDirector(), padre, documento);
+		// El identificador lo vamos a crear como un atributo de la etiqueta empleado
+	}
+	
+	//Método que genera un Element a partir de su nombre y su valor
+	private Element creaElemento(String nombreElemento, String valorElemento, Element padre, Document documento) {
+		Element elemento = documento.createElement(nombreElemento);
+		Text texto = documento.createTextNode(valorElemento);
+		padre.appendChild(elemento);// Se lo asigno a su padre como Hijo
+		elemento.appendChild(texto);// Cargo el elemento con el valor
+		return elemento;
+	}
+
+	//Método que a partir de un Document, genera un fichero XML
+	private void escribeDocumentoEnFichero(Document documento, String nombreFichero) throws TransformerException {
+		// clases necesarias finalizar la creación del archivo XML
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer;
+		transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(documento);
+		StreamResult resultado = new StreamResult(new File(RUTA_RESOURCES + nombreFichero));
+		transformer.transform(source, resultado);
+	}
+
+	//Método que escribe una lista de empleados a un fichero
+	public void escribeEmpleadosEnXML(String nombreFichero, List<Pelicula> empleados) {
+		try {
+			Document documento = this.construyoObjetoDocumento("empleados");
+			for(Pelicula p : empleados)
+			{
+				Element elemento = this.creaElemento("empleado", null, documento.getDocumentElement(), documento);
+				agregaPeliculaADocumento(documento, elemento, p);
+			}
+			escribeDocumentoEnFichero(documento, nombreFichero);
+		} catch (ParserConfigurationException e1) {
+			System.out.println(e1.getMessage());
+		} catch (TransformerException e1) {
+			System.out.println(e1.getMessage());
+		}
+	}
+
+	//Metodo que escribe una pelicula en un fichero
+	public void escribeEmpleadoEnXML(String nombreFichero, Pelicula p) {
+		try {
+			Document documento = this.construyoObjetoDocumento("pelicula");
+			// Recupero la raíz del documento
+			Element raiz = documento.getDocumentElement();
+			agregaPeliculaADocumento(documento, raiz, p);
+			escribeDocumentoEnFichero(documento, nombreFichero);
+		} catch (ParserConfigurationException e1) {
+			System.out.println(e1.getMessage());
+		} catch (TransformerException e1) {
+			System.out.println(e1.getMessage());
+		}
+	}	
 }
